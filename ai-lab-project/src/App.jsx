@@ -3,8 +3,9 @@ import Grid from "./components/Grid";
 import Legend from "./components/Legend";
 
 // Set your backend API URL here
-const API_URL =
-  `${import.meta.env.API_URL}/api/games` | "http://localhost:5000/api/games";
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/games`
+  : "http://localhost:5000/api/games";
 
 export default function App() {
   const [game, setGame] = useState(null);
