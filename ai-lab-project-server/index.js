@@ -7,12 +7,25 @@ config();
 const app = express();
 
 // --- Middleware ---
+const allowedOrigins = [
+  "https://ai-wumpus-world-game.vercel.app", // your frontend domain
+  "http://localhost:5173", // local dev (optional)
+];
+
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL, "http://localhost:5173"],
-    credentials: true,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like curl/postman) or whitelisted domains
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // if you’re using cookies or auth
   })
 );
+
 app.use(express.json()); // Body parser for JSON
 
 // --- DB Config ---
